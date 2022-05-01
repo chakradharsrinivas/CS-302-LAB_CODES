@@ -1,0 +1,60 @@
+---
+title: "lab final"
+author: "sivasai"
+date: '2022-05-01'
+output: html_document
+---
+## Part 3)
+A point set with real values is given in 2020_em_clustering.csv. Considering that there are two clusters, use EM to group together points belonging to the same cluster. Try and argue that k-means is an EM algorithm.
+```{r}
+library(mclust)
+```
+
+```{r}
+content <- read.table("C:\\Users\\SIVASAI\\Downloads\\2020_em_clustering.csv", sep = ",")
+content
+```
+
+
+## R Markdown
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+df <- as.data.frame(t(content))
+df
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r}
+# using this mclust package for estimation maximization algorithm
+train_data <- Mclust(df, G=2)
+summary(train_data)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+# 1D plot for the data with classification
+```
+
+
+```{r}
+mclust1Dplot(df$V1, parameters = train_data$parameters, z = train_data$z, what = "classification", xlab = "points position")
+```
+ff
+```{r}
+# 1D plot for the data with uncertainty
+mclust1Dplot(df$V1, parameters = train_data$parameters, z = train_data$z, what = "uncertainty", xlab = "points position")
+```
+```{r}
+data <- kmeans(df$V1, centers = 2)
+data
+```
+```{r}
+plot(df$V1, data$cluster, xlab = "points position", ylab = "Classification", col = ifelse(data$cluster>1.5, "red", "blue"), pch="|")
+```
+
